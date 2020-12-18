@@ -30,16 +30,16 @@ class RendezVous
     private $horaire;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Patients::class, inversedBy="RendezVous")
+     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="RendezVous", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $patients;
+    private $patient;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Medecins::class, inversedBy="RendezVous")
+     * @ORM\ManyToOne(targetEntity=Medecin::class, inversedBy="RendezVous", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $medecins;
+    private $medecin;
 
     public function getId(): ?int
     {
@@ -70,26 +70,26 @@ class RendezVous
         return $this;
     }
 
-    public function getPatients(): ?Patients
+    public function getPatient(): ?Patient
     {
-        return $this->patients;
+        return $this->patient;
     }
 
-    public function setPatients(?Patients $patients): self
+    public function setPatient(?Patient $patient): self
     {
-        $this->patients = $patients;
+        $this->patient = $patient;
 
         return $this;
     }
 
-    public function getMedecins(): ?Medecins
+    public function getMedecin(): ?Medecin
     {
-        return $this->medecins;
+        return $this->medecin;
     }
 
-    public function setMedecins(?Medecins $medecins): self
+    public function setMedecin(?Medecin $medecin): self
     {
-        $this->medecins = $medecins;
+        $this->medecin = $medecin;
 
         return $this;
     }
