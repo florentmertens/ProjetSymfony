@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\DTO;
 
-use App\Repository\PatientRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Medecin;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=PatientRepository::class)
- */
-class Patient implements UserInterface
+class PatientDTO
 {
     /**
      * @ORM\Id
@@ -92,18 +88,12 @@ class Patient implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="patient")
-     */
-    private $RendezVous;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Medecin::class, mappedBy="patients")
      */
     private $medecins;
 
     public function __construct()
     {
-        $this->RendezVous = new ArrayCollection();
         $this->medecins = new ArrayCollection();
     }
 
@@ -172,9 +162,6 @@ class Patient implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getPassword(): ?string
     {
         return (string) $this->password;
@@ -187,9 +174,6 @@ class Patient implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -207,31 +191,13 @@ class Patient implements UserInterface
     }
 
     /**
-     * @return Collection|RendezVous[]
+     * Set the value of id
+     *
+     * @return  self
      */
-    public function getRendezVous(): Collection
+    public function setId($id)
     {
-        return $this->RendezVous;
-    }
-
-    public function addRendezVou(RendezVous $rendezVou): self
-    {
-        if (!$this->RendezVous->contains($rendezVou)) {
-            $this->RendezVous[] = $rendezVou;
-            $rendezVou->setPatient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRendezVou(RendezVous $rendezVou): self
-    {
-        if ($this->RendezVous->removeElement($rendezVou)) {
-            // set the owning side to null (unless already changed)
-            if ($rendezVou->getPatient() === $this) {
-                $rendezVou->setPatient(null);
-            }
-        }
+        $this->id = $id;
 
         return $this;
     }
@@ -244,49 +210,9 @@ class Patient implements UserInterface
         return $this->medecins;
     }
 
-    public function addMedecin(Medecin $medecin): self
+    public function setMedecins(Collection $medecins): self
     {
-        if (!$this->medecins->contains($medecin)) {
-            $this->medecins[] = $medecin;
-            $medecin->addPatient($this);
-        }
-
+        $this->medecins = $medecins;
         return $this;
-    }
-
-    public function removeMedecin(Medecin $medecin): self
-    {
-        if ($this->medecins->removeElement($medecin)) {
-            $medecin->removePatient($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getSalt()
-    {
-        // not needed when using the "bcrypt" algorithm in security.yaml
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUsername(): string
-    {
-        return (string) $this->email;
     }
 }

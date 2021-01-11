@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Entity;
+namespace App\DTO;
 
-use App\Repository\PatientRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
+use App\Entity\Patient;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=PatientRepository::class)
- */
-class Patient implements UserInterface
+
+class MedecinDTO
 {
     /**
      * @ORM\Id
@@ -75,9 +73,9 @@ class Patient implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      * @Assert\NotBlank(
-     *      message = "Ce champ ne peut pas être vide." 
+     *      message = "Ce champ ne peut pas être vide."
      * )
      * @Assert\Regex(
      *      pattern = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/",
@@ -92,19 +90,25 @@ class Patient implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="patient")
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(
+     *      message = "Ce champ ne peut pas être vide."
+     * )
+     * @Assert\Regex(
+     *      pattern = "/^\D+$/",
+     *      message = "Les chiffres ne sont pas autorisé."
+     * )
      */
-    private $RendezVous;
+    private $specialite;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Medecin::class, mappedBy="patients")
+     * @ORM\ManyToMany(targetEntity=Patient::class, inversedBy="medecins")
      */
-    private $medecins;
+    private $patients;
 
     public function __construct()
     {
-        $this->RendezVous = new ArrayCollection();
-        $this->medecins = new ArrayCollection();
+        $this->patients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -172,9 +176,6 @@ class Patient implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getPassword(): ?string
     {
         return (string) $this->password;
@@ -187,9 +188,6 @@ class Patient implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -206,87 +204,57 @@ class Patient implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|RendezVous[]
-     */
-    public function getRendezVous(): Collection
+    public function getSpecialite(): ?string
     {
-        return $this->RendezVous;
+        return $this->specialite;
     }
 
-    public function addRendezVou(RendezVous $rendezVou): self
+    public function setSpecialite(string $specialite): self
     {
-        if (!$this->RendezVous->contains($rendezVou)) {
-            $this->RendezVous[] = $rendezVou;
-            $rendezVou->setPatient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRendezVou(RendezVous $rendezVou): self
-    {
-        if ($this->RendezVous->removeElement($rendezVou)) {
-            // set the owning side to null (unless already changed)
-            if ($rendezVou->getPatient() === $this) {
-                $rendezVou->setPatient(null);
-            }
-        }
+        $this->specialite = $specialite;
 
         return $this;
     }
 
     /**
-     * @return Collection|Medecin[]
-     */
-    public function getMedecins(): Collection
-    {
-        return $this->medecins;
-    }
-
-    public function addMedecin(Medecin $medecin): self
-    {
-        if (!$this->medecins->contains($medecin)) {
-            $this->medecins[] = $medecin;
-            $medecin->addPatient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMedecin(Medecin $medecin): self
-    {
-        if ($this->medecins->removeElement($medecin)) {
-            $medecin->removePatient($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getSalt()
-    {
-        // not needed when using the "bcrypt" algorithm in security.yaml
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    /**
-     * A visual identifier that represents this user.
+     * Set the value of id
      *
-     * @see UserInterface
+     * @return  self
      */
-    public function getUsername(): string
+    public function setId($id)
     {
-        return (string) $this->email;
+        $this->id = $id;
+
+        return $this;
     }
+
+    /**
+     * @return Collection|patient[]
+     */
+    public function getPatients(): Collection
+    {
+        return $this->patients;
+    }
+
+    public function setPatients(Collection $patients): self
+    {
+        $this->patients = $patients;
+        return $this;
+    }
+
+    public function addPatient(Patient $patient): self
+    {
+        if (!$this->patients->contains($patient)) {
+            $this->patients[] = $patient;
+        }
+
+        return $this;
+    }
+
+    // public function removePatient(Patient $patient): self
+    // {
+    //     $this->patients->removeElement($patient);
+
+    //     return $this;
+    // }
 }
