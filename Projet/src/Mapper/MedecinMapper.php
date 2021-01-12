@@ -18,7 +18,7 @@ class MedecinMapper
         $medecin->setEmail($medecinDto->getEmail());
         $medecin->setPassword($medecinDto->getPassword());
         $medecin->setSpecialite($medecinDto->getSpecialite());
-        $medecin->setRoles($medecinDto->getRoles());
+        $medecin->setRoles([]);
         $patientDtos = $medecinDto->getPatients();
         foreach ($patientDtos as $patientDto) {
             $medecin->addPatient($patientDto);

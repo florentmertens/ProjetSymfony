@@ -7,10 +7,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     description="PatientDTO model",
+ *     title="PatientDTO model"
+ * )
+ */
 class PatientDTO
 {
     /**
+     * @OA\Property(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -18,6 +26,7 @@ class PatientDTO
     private $id;
 
     /**
+     * @OA\Property(type="string")
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(
      *      message = "Ce champ ne peut pas être vide."
@@ -30,6 +39,7 @@ class PatientDTO
     private $nom;
 
     /**
+     * @OA\Property(type="string")
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(
      *      message = "Ce champ ne peut pas être vide."
@@ -42,6 +52,7 @@ class PatientDTO
     private $prenom;
 
     /**
+     * @OA\Property(type="string")
      * @ORM\Column(type="string", length=10)
      * @Assert\NotBlank(
      *      message = "Ce champ ne peut pas être vide."
@@ -54,11 +65,13 @@ class PatientDTO
     private $numeroTel;
 
     /**
+     * @OA\Property(type="string")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $adresse;
 
     /**
+     * @OA\Property(type="string")
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(
      *      message = "Ce champ ne peut pas être vide."
@@ -70,7 +83,8 @@ class PatientDTO
     private $email;
 
     /**
-     * @var string The hashed password
+     * @OA\Property(type="string")
+     * @var string
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(
      *      message = "Ce champ ne peut pas être vide." 
@@ -83,11 +97,7 @@ class PatientDTO
     private $password;
 
     /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-    /**
+     * @OA\Property(type="object")
      * @ORM\ManyToMany(targetEntity=Medecin::class, mappedBy="patients")
      */
     private $medecins;
@@ -170,22 +180,6 @@ class PatientDTO
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-        $this->roles = $roles;
 
         return $this;
     }

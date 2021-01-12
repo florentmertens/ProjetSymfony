@@ -1,0 +1,477 @@
+openapi: 3.0.0
+info:
+  title: 'Doctolib Management'
+  description: 'Doctolib Management'
+  version: V1
+paths:
+  /medecins:
+    get:
+      tags:
+        - Medecin
+      summary: 'Returns a list of MedecinDTO'
+      description: 'Returns a list of MedecinDTO'
+      operationId: 'App\Controller\MedecinRestController::searchAll'
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedecinDTO'
+        '404':
+          description: 'If no MedecinDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    post:
+      tags:
+        - Medecin
+      summary: 'Add a MedecinDTO'
+      description: 'Add a MedecinDTO'
+      operationId: 'App\Controller\MedecinRestController::create'
+      responses:
+        '201':
+          description: 'Successful operation, MedecinDTO create'
+        '405':
+          description: 'Invalid input'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  '/medecins/id/{id}':
+    get:
+      tags:
+        - Medecin
+      summary: 'Search a MedecinDTO by ID'
+      description: 'Search a MedecinDTO by ID'
+      operationId: 'App\Controller\MedecinRestController::searchById'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of medecin to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedecinDTO'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no MedecinDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    put:
+      tags:
+        - Medecin
+      summary: 'Update a MedecinDTO'
+      description: 'Update a MedecinDTO'
+      operationId: 'App\Controller\MedecinRestController::update'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of medecin to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Successful operation, MedecinDTO update'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no MedecinDTO found'
+        '405':
+          description: 'Invalid input'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    delete:
+      tags:
+        - Medecin
+      summary: 'Delete a MedecinDTO'
+      description: 'Delete a MedecinDTO'
+      operationId: 'App\Controller\MedecinRestController::delete'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of medecin to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: 'Successful operation, MedecinDTO delete'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no MedecinDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  '/medecins/{specialite}':
+    get:
+      tags:
+        - Medecin
+      summary: 'Search a MedecinDTO by specialty'
+      description: 'Search a MedecinDTO by specialty'
+      operationId: 'App\Controller\MedecinRestController::searchBySpecialite'
+      parameters:
+        -
+          name: specialite
+          in: path
+          description: 'Speciality of medecin to return'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedecinDTO'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no MedecinDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  '/medecins/addPatients/{id}':
+    post:
+      tags:
+        - Medecin
+      summary: 'Add Patient to MedecinDTO'
+      description: 'Add Patient to MedecinDTO'
+      operationId: 'App\Controller\MedecinRestController::addPatient'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of patient to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '201':
+          description: 'Successful operation, Patient add to MedecinDTO'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no MedecinDTO or Patient found'
+        '405':
+          description: 'Invalid input'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  /patients:
+    post:
+      tags:
+        - Patient
+      summary: 'Add a PatientDTO'
+      description: 'Add a PatientDTO'
+      operationId: 'App\Controller\PatientRestController::create'
+      responses:
+        '201':
+          description: 'Successful operation, PatientDTO create'
+        '405':
+          description: 'Invalid input'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  '/patients/{id}':
+    put:
+      tags:
+        - Patient
+      summary: 'Update a PatientDTO'
+      description: 'Update a PatientDTO'
+      operationId: 'App\Controller\PatientRestController::update'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of patient to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Successful operation, PatientDTO update'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no PatientDTO found'
+        '405':
+          description: 'Invalid input'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    delete:
+      tags:
+        - Patient
+      summary: 'Delete a PatientDTO'
+      description: 'Delete a PatientDTO'
+      operationId: 'App\Controller\PatientRestController::delete'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of patient to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: 'Successful operation, PatientDTO delete'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no PatientDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  '/Patients/{id}':
+    get:
+      tags:
+        - Patient
+      summary: 'Search a PatientDTO by ID'
+      description: 'Search a PatientDTO by ID'
+      operationId: 'App\Controller\PatientRestController::searchById'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of patient to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientDTO'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no PatientDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  /rendezVouss:
+    post:
+      tags:
+        - RendezVous
+      summary: 'Add a RendezVousDTO'
+      description: 'Add a RendezVousDTO'
+      operationId: 'App\Controller\RendezVousRestController::create'
+      responses:
+        '201':
+          description: 'Successful operation, RendezVousDTO create'
+        '405':
+          description: 'Invalid input'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  '/rendezVouss/{id}':
+    get:
+      tags:
+        - RendezVous
+      summary: 'Search a RendezVousDTO by ID'
+      description: 'Search a RendezVousDTO by ID'
+      operationId: 'App\Controller\RendezVousRestController::searchById'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of rendezVous to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVousDTO'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no RendezVousDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    put:
+      tags:
+        - RendezVous
+      summary: 'Update a RendezVousDTO'
+      description: 'Update a RendezVousDTO'
+      operationId: 'App\Controller\RendezVousRestController::update'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of rendezVous to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Successful operation, RendezVousDTO update'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no RendezVousDTO found'
+        '405':
+          description: 'Invalid input'
+        '500':
+          description: 'Internal server Error. Please contact us'
+    delete:
+      tags:
+        - RendezVous
+      summary: 'Delete a RendezVousDTO'
+      description: 'Delete a RendezVousDTO'
+      operationId: 'App\Controller\RendezVousRestController::delete'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of rendezVous to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: 'Successful operation, RendezVousDTO delete'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no RendezVousDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  '/rendezVouss/patient/{id}':
+    get:
+      tags:
+        - RendezVous
+      summary: 'Search a RendezVousDTO by Patient ID'
+      description: 'Search a RendezVousDTO by Patient ID'
+      operationId: 'App\Controller\RendezVousRestController::searchByPatientId'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of Patient to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVousDTO'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no RendezVousDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+  '/rendezVouss/medecin/{id}':
+    get:
+      tags:
+        - RendezVous
+      summary: 'Search a RendezVousDTO by Medecin ID'
+      description: 'Search a RendezVousDTO by Medecin ID'
+      operationId: 'App\Controller\RendezVousRestController::searchByMedecinId'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of Medecin to return'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVousDTO'
+        '400':
+          description: 'Invalid ID supplied'
+        '404':
+          description: 'If no RendezVousDTO found'
+        '500':
+          description: 'Internal server Error. Please contact us'
+components:
+  schemas:
+    MedecinDTO:
+      title: 'MedecinDTO model'
+      description: 'MedecinDTO model'
+      properties:
+        id:
+          type: integer
+        nom:
+          type: string
+        prenom:
+          type: string
+        numeroTel:
+          type: string
+        adresse:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        specialite:
+          type: string
+        patients:
+          type: object
+      type: object
+    PatientDTO:
+      title: 'PatientDTO model'
+      description: 'PatientDTO model'
+      properties:
+        id:
+          type: integer
+        nom:
+          type: string
+        prenom:
+          type: string
+        numeroTel:
+          type: string
+        adresse:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        medecins:
+          type: object
+      type: object
+    RendezVousDTO:
+      title: 'RendezVousDTO model'
+      description: 'RendezVousDTO model'
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+        horaire:
+          type: string
+        patientId:
+          type: integer
+        medecinId:
+          type: integer
+      type: object

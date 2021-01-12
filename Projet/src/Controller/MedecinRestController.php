@@ -16,7 +16,16 @@ use FOS\RestBundle\Controller\Annotations\Delete;
 use App\Service\Exception\MedecinServiceException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use OpenApi\Annotations as OA;
 
+
+/**
+ * @OA\Info(
+ *      description="Doctolib Management",
+ *      version="V1",
+ *      title="Doctolib Management"
+ * )
+ */
 class MedecinRestController extends AbstractFOSRestController
 {
     private $medecinService;
@@ -32,6 +41,25 @@ class MedecinRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Get(
+     *     path="/medecins",
+     *     tags={"Medecin"},
+     *     summary="Returns a list of MedecinDTO",
+     *     description="Returns a list of MedecinDTO",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation", 
+     *         @OA\JsonContent(ref="#/components/schemas/MedecinDTO")   
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no MedecinDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Get(MedecinRestController::URI_MEDECIN_COLLECTION)
      */
     public function searchAll()
@@ -45,6 +73,24 @@ class MedecinRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Post(
+     *     path="/medecins",
+     *     tags={"Medecin"},
+     *     summary="Add a MedecinDTO",
+     *     description="Add a MedecinDTO",
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful operation, MedecinDTO create"   
+     *     ),
+     *      @OA\Response(
+     *         response=405,
+     *         description="Invalid input"
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Post(MedecinRestController::URI_MEDECIN_COLLECTION)
      * @ParamConverter("medecinDto", converter="fos_rest.request_body")
      * @return void
@@ -60,6 +106,42 @@ class MedecinRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Put(
+     *     path="/medecins/id/{id}",
+     *     tags={"Medecin"},
+     *     summary="Update a MedecinDTO",
+     *     description="Update a MedecinDTO",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of medecin to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation, MedecinDTO update"   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no MedecinDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=405,
+     *         description="Invalid input"
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Put(MedecinRestController::URI_MEDECIN_INSTANCE)
      * @ParamConverter("medecinDto", converter="fos_rest.request_body")
      * @param MedecinDTO $medecinDto
@@ -76,6 +158,38 @@ class MedecinRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Delete(
+     *     path="/medecins/id/{id}",
+     *     tags={"Medecin"},
+     *     summary="Delete a MedecinDTO",
+     *     description="Delete a MedecinDTO",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of medecin to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Successful operation, MedecinDTO delete"  
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no MedecinDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Delete(MedecinRestController::URI_MEDECIN_INSTANCE)
      * @param [type] $id
      * @return void
@@ -91,6 +205,39 @@ class MedecinRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Get(
+     *     path="/medecins/id/{id}",
+     *     tags={"Medecin"},
+     *     summary="Search a MedecinDTO by ID",
+     *     description="Search a MedecinDTO by ID",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of medecin to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation", 
+     *         @OA\JsonContent(ref="#/components/schemas/MedecinDTO")   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no MedecinDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Get(MedecinRestController::URI_MEDECIN_INSTANCE)
      * @return void
      */
@@ -109,6 +256,38 @@ class MedecinRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Get(
+     *     path="/medecins/{specialite}",
+     *     tags={"Medecin"},
+     *     summary="Search a MedecinDTO by specialty",
+     *     description="Search a MedecinDTO by specialty",
+     *      @OA\Parameter(
+     *         name="specialite",
+     *         in="path",
+     *         description="Speciality of medecin to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation", 
+     *         @OA\JsonContent(ref="#/components/schemas/MedecinDTO")   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no MedecinDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Get("/medecins/{specialite}")
      * @return void
      */
@@ -127,6 +306,42 @@ class MedecinRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Post(
+     *     path="/medecins/addPatients/{id}",
+     *     tags={"Medecin"},
+     *     summary="Add Patient to MedecinDTO",
+     *     description="Add Patient to MedecinDTO",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of patient to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful operation, Patient add to MedecinDTO"   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no MedecinDTO or Patient found"    
+     *     ),
+     *      @OA\Response(
+     *         response=405,
+     *         description="Invalid input"
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Post("/medecins/addPatient/{id}")
      * @ParamConverter("medecinDto", converter="fos_rest.request_body")
      * @param MedecinDTO $medecinDto

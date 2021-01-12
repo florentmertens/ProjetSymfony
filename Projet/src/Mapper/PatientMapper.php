@@ -16,7 +16,7 @@ class PatientMapper
         $patient->setAdresse($patientDto->getAdresse());
         $patient->setEmail($patientDto->getEmail());
         $patient->setPassword($patientDto->getPassword());
-        $patient->setRoles($patientDto->getRoles());
+        $patient->setRoles([]);
         return $patient;
     }
 

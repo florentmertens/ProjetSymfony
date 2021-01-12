@@ -5,13 +5,19 @@ namespace App\DTO;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Annotations as OA;
 
 /**
+ * @OA\Schema(
+ *     description="RendezVousDTO model",
+ *     title="RendezVousDTO model"
+ * )
  * @ORM\Entity(repositoryClass=RendezVousRepository::class)
  */
 class RendezVousDTO
 {
     /**
+     * @OA\Property(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -19,17 +25,25 @@ class RendezVousDTO
     private $id;
 
     /**
+     * @OA\Property(type="string")
      * @ORM\Column(type="date")
      */
     private $date;
 
     /**
+     * @OA\Property(type="string")
      * @ORM\Column(type="time")
      */
     private $horaire;
 
+    /**
+     * @OA\Property(type="integer")
+     */
     private $patientId;
 
+    /**
+     * @OA\Property(type="integer")
+     */
     private $medecinId;
 
 

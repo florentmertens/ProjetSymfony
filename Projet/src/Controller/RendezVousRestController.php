@@ -16,7 +16,15 @@ use FOS\RestBundle\Controller\Annotations\Delete;
 use App\Service\Exception\RendezVousServiceException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *      description="Doctolib Management",
+ *      version="V1",
+ *      title="Doctolib Management"
+ * )
+ */
 class RendezVousRestController extends AbstractFOSRestController
 {
     private $rendezVousService;
@@ -32,6 +40,24 @@ class RendezVousRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Post(
+     *     path="/rendezVouss",
+     *     tags={"RendezVous"},
+     *     summary="Add a RendezVousDTO",
+     *     description="Add a RendezVousDTO",
+     *     @OA\Response(
+     *         response=201,
+     *         description="Successful operation, RendezVousDTO create"   
+     *     ),
+     *      @OA\Response(
+     *         response=405,
+     *         description="Invalid input"
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Post(RendezVousRestController::URI_RENDEZVOUS_COLLECTION)
      * @ParamConverter("rendezVousDto", converter="fos_rest.request_body")
      * @return void
@@ -47,6 +73,42 @@ class RendezVousRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Put(
+     *     path="/rendezVouss/{id}",
+     *     tags={"RendezVous"},
+     *     summary="Update a RendezVousDTO",
+     *     description="Update a RendezVousDTO",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of rendezVous to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation, RendezVousDTO update"   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no RendezVousDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=405,
+     *         description="Invalid input"
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Put(RendezVousRestController::URI_RENDEZVOUS_INSTANCE)
      * @ParamConverter("rendezVousDto", converter="fos_rest.request_body")
      * @param RendezVousDTO $endezVousDto
@@ -63,6 +125,38 @@ class RendezVousRestController extends AbstractFOSRestController
     }
 
     /**
+     *  @OA\Delete(
+     *     path="/rendezVouss/{id}",
+     *     tags={"RendezVous"},
+     *     summary="Delete a RendezVousDTO",
+     *     description="Delete a RendezVousDTO",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of rendezVous to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Successful operation, RendezVousDTO delete"  
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no RendezVousDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Delete(RendezVousRestController::URI_RENDEZVOUS_INSTANCE)
      * @param [type] $id
      * @return void
@@ -78,6 +172,39 @@ class RendezVousRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Get(
+     *     path="/rendezVouss/{id}",
+     *     tags={"RendezVous"},
+     *     summary="Search a RendezVousDTO by ID",
+     *     description="Search a RendezVousDTO by ID",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of rendezVous to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation", 
+     *         @OA\JsonContent(ref="#/components/schemas/RendezVousDTO")   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no RendezVousDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * ) 
      * @Get(RendezVousRestController::URI_RENDEZVOUS_INSTANCE)
      * @return void
      */
@@ -96,6 +223,39 @@ class RendezVousRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Get(
+     *     path="/rendezVouss/patient/{id}",
+     *     tags={"RendezVous"},
+     *     summary="Search a RendezVousDTO by Patient ID",
+     *     description="Search a RendezVousDTO by Patient ID",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of Patient to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation", 
+     *         @OA\JsonContent(ref="#/components/schemas/RendezVousDTO")   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no RendezVousDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Get("/rendezVouss/patient/{id}")
      * @return void
      */
@@ -114,6 +274,39 @@ class RendezVousRestController extends AbstractFOSRestController
     }
 
     /**
+     * @OA\Get(
+     *     path="/rendezVouss/medecin/{id}",
+     *     tags={"RendezVous"},
+     *     summary="Search a RendezVousDTO by Medecin ID",
+     *     description="Search a RendezVousDTO by Medecin ID",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of Medecin to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation", 
+     *         @OA\JsonContent(ref="#/components/schemas/RendezVousDTO")   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no RendezVousDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
      * @Get("/rendezVouss/medecin/{id}")
      * @return void
      */
