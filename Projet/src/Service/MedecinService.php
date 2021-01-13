@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\Exception\DriverException;
 use App\Service\Exception\MedecinServiceException;
 use App\Mapper\MedecinMapper;
+use App\Mapper\RendezVousMapper;
 use App\Repository\PatientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -19,13 +20,20 @@ class MedecinService
     private $manager;
     private $medecinMapper;
     private $patientRepository;
+    private $rendezVousMapper;
 
-    public function __construct(MedecinRepository $medecinRepository, EntityManagerInterface $manager, MedecinMapper $mapper, PatientRepository $patientRepository)
-    {
+    public function __construct(
+        MedecinRepository $medecinRepository,
+        EntityManagerInterface $manager,
+        MedecinMapper $mapper,
+        PatientRepository $patientRepository,
+        RendezVousMapper $rendezVousMapper
+    ) {
         $this->medecinRepository = $medecinRepository;
         $this->manager = $manager;
         $this->medecinMapper = $mapper;
         $this->patientRepository = $patientRepository;
+        $this->rendezVousMapper = $rendezVousMapper;
     }
 
     public function searchAll()
@@ -97,6 +105,36 @@ class MedecinService
                 $this->manager->persist($medecin);
                 $this->manager->flush();
             }
+        } catch (DriverException $e) {
+            throw new MedecinServiceException("Un problème est technique est servenu. Veuilllez réessayer ultérieurement.", $e->getCode());
+        }
+    }
+
+    public function removePatient(int $idPatient, MedecinDTO $medecinDto)
+    {
+        try {
+            $medecin = $this->medecinRepository->find($medecinDto->getId());
+            $patient = $this->patientRepository->find($idPatient);
+            if ($medecin && $patient) {
+                $medecin->removePatient($patient);
+                $this->manager->persist($medecin);
+                $this->manager->flush();
+            }
+        } catch (DriverException $e) {
+            throw new MedecinServiceException("Un problème est technique est servenu. Veuilllez réessayer ultérieurement.", $e->getCode());
+        }
+    }
+
+    public function searchRendezVous(int $idMedecin)
+    {
+        try {
+            $medecin = $this->medecinRepository->find($idMedecin);
+            $rendezVouss = $medecin->getRendezVous();
+            $rendezVousDtos = new ArrayCollection();
+            foreach ($rendezVouss as $rendezVous) {
+                $rendezVousDtos[] = $this->rendezVousMapper->transformeRendezVousEntityToRendezVousDto($rendezVous);
+            }
+            return $rendezVousDtos;
         } catch (DriverException $e) {
             throw new MedecinServiceException("Un problème est technique est servenu. Veuilllez réessayer ultérieurement.", $e->getCode());
         }

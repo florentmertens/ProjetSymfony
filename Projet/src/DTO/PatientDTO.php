@@ -3,11 +3,12 @@
 namespace App\DTO;
 
 use App\Entity\Medecin;
+use App\Entity\RendezVous;
+use OpenApi\Annotations as OA;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(

@@ -4,11 +4,12 @@ namespace App\DTO;
 
 
 use App\Entity\Patient;
+use App\Entity\RendezVous;
+use OpenApi\Annotations as OA;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
-use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
@@ -21,7 +22,6 @@ class MedecinDTO
     /**
      * @OA\Property(type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -126,6 +126,13 @@ class MedecinDTO
         return $this->id;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getNom(): ?string
     {
         return $this->nom;
@@ -211,18 +218,6 @@ class MedecinDTO
     }
 
     /**
-     * Set the value of id
-     *
-     * @return  self
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      * @return Collection|patient[]
      */
     public function getPatients(): Collection
@@ -244,11 +239,4 @@ class MedecinDTO
 
         return $this;
     }
-
-    // public function removePatient(Patient $patient): self
-    // {
-    //     $this->patients->removeElement($patient);
-
-    //     return $this;
-    // }
 }

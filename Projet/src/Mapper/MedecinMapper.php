@@ -42,14 +42,14 @@ class MedecinMapper
         $patientDtos = new ArrayCollection();
         $patientMapper = new PatientMapper();
         foreach ($patients as $patient) {
-            $patientDtos[] = $patientMapper->transformePatientEntityToPatientDtoWithoutCollection($patient);
+            $patientDtos[] = $patientMapper->transformePatientEntityToPatientDtoWithoutMedecin($patient);
         }
 
         $medecinDto->setPatients($patientDtos);
         return $medecinDto;
     }
 
-    public function transformeMedecinEntityToMedecinDtoWithoutCollection(Medecin $medecin)
+    public function transformeMedecinEntityToMedecinDtoWithoutPatient(Medecin $medecin)
     {
         $medecinDto = new MedecinDTO();
         $medecinDto->setId($medecin->getId());

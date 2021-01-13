@@ -35,13 +35,13 @@ class PatientMapper
         $medecinDtos = new ArrayCollection();
         $medecinMapper = new MedecinMapper();
         foreach ($medecins as $medecin) {
-            $medecinDtos[] = $medecinMapper->transformeMedecinEntityToMedecinDtoWithoutCollection($medecin);
+            $medecinDtos[] = $medecinMapper->transformeMedecinEntityToMedecinDtoWithoutPatient($medecin);
         }
         $patientDto->setMedecins($medecinDtos);
         return $patientDto;
     }
 
-    public function transformePatientEntityToPatientDtoWithoutCollection(Patient $patient)
+    public function transformePatientEntityToPatientDtoWithoutMedecin(Patient $patient)
     {
         $patientDto = new PatientDTO();
         $patientDto->setId($patient->getId());

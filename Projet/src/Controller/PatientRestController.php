@@ -173,7 +173,7 @@ class PatientRestController extends AbstractFOSRestController
 
     /**
      * @OA\Get(
-     *     path="/Patients/{id}",
+     *     path="/patients/{id}",
      *     tags={"Patient"},
      *     summary="Search a PatientDTO by ID",
      *     description="Search a PatientDTO by ID",
@@ -217,6 +217,103 @@ class PatientRestController extends AbstractFOSRestController
         }
         if ($patientDto) {
             return View::create($patientDto, Response::HTTP_OK, ["Content-type" => "application/json"]);
+        } else {
+            return View::create([], Response::HTTP_NOT_FOUND, ["Content-type" => "application/json"]);
+        }
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/patients/removeMedecin/{idMedecin}",
+     *     tags={"Patient"},
+     *     summary="Remove Medecin from Patient",
+     *     description="Remove Medecin from Patient",
+     *      @OA\Parameter(
+     *         name="idMedecin",
+     *         in="path",
+     *         description="ID of Medecin to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Successful operation, Medecin of Patient remove"  
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no Medecin found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"
+     *     )
+     * )
+     * @Put("/patients/removeMedecin/{idMedecin}")
+     * @ParamConverter("patientDto", converter="fos_rest.request_body")
+     */
+    public function removeMedecin(int $idMedecin, PatientDTO $patientDto)
+    {
+        try {
+            $this->patientService->removeMedecin($idMedecin, $patientDto);
+            return View::create([], Response::HTTP_NO_CONTENT, ["Content-type" => "application/json"]);
+        } catch (PatientServiceException $e) {
+            return View::create($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, ["Content-type" => "application/json"]);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/patients/rdv/{id}",
+     *     tags={"Patient"},
+     *     summary="Return a list of rendezVousDTO from PatientDTO",
+     *     description="Return a list of rendezVousDTO from PatientDTO",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of patient to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation", 
+     *         @OA\JsonContent(ref="#/components/schemas/RendezVousDTO")   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no PatientDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
+     * @Get("/patients/rdv/{id}")
+     * @return void
+     */
+    public function searchRendezVous(int $id)
+    {
+        try {
+            $rendezVousDto = $this->patientService->searchRendezVous($id);
+        } catch (PatientServiceException $e) {
+            return View::create($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, ["Content-type" => "application/json"]);
+        }
+        if ($rendezVousDto) {
+            return View::create($rendezVousDto, Response::HTTP_OK, ["Content-type" => "application/json"]);
         } else {
             return View::create([], Response::HTTP_NOT_FOUND, ["Content-type" => "application/json"]);
         }

@@ -356,4 +356,101 @@ class MedecinRestController extends AbstractFOSRestController
             return View::create($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, ["Content-type" => "application/json"]);
         }
     }
+
+    /**
+     * @OA\Put(
+     *     path="/medecins/removePatient/{idPatient}",
+     *     tags={"Medecin"},
+     *     summary="Remove Patient from Medecin",
+     *     description="Remove Patient from Medecin",
+     *      @OA\Parameter(
+     *         name="idPatient",
+     *         in="path",
+     *         description="ID of patient to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Successful operation, Patient of Medecin remove"  
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no Patient found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
+     * @Put("/medecins/removePatient/{idPatient}")
+     * @ParamConverter("medecinDto", converter="fos_rest.request_body")
+     */
+    public function removePatient(int $idPatient, MedecinDTO $medecinDto)
+    {
+        try {
+            $this->medecinService->removePatient($idPatient, $medecinDto);
+            return View::create([], Response::HTTP_NO_CONTENT, ["Content-type" => "application/json"]);
+        } catch (MedecinServiceException $e) {
+            return View::create($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, ["Content-type" => "application/json"]);
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/medecins/rdv/{id}",
+     *     tags={"Medecin"},
+     *     summary="Return a list of rendezVousDTO from MedecinDTO",
+     *     description="Return a list of rendezVousDTO from MedecinDTO",
+     *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of medecin to return",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation", 
+     *         @OA\JsonContent(ref="#/components/schemas/RendezVousDTO")   
+     *     ),
+     *      @OA\Response(
+     *         response=400,
+     *         description="Invalid ID supplied"
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="If no MedecinDTO found"    
+     *     ),
+     *      @OA\Response(
+     *         response=500,
+     *         description="Internal server Error. Please contact us"    
+     *     )
+     * )
+     * @Get("/medecins/rdv/{id}")
+     * @return void
+     */
+    public function searchRendezVous(int $id)
+    {
+        try {
+            $rendezVousDto = $this->medecinService->searchRendezVous($id);
+        } catch (MedecinServiceException $e) {
+            return View::create($e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR, ["Content-type" => "application/json"]);
+        }
+        if ($rendezVousDto) {
+            return View::create($rendezVousDto, Response::HTTP_OK, ["Content-type" => "application/json"]);
+        } else {
+            return View::create([], Response::HTTP_NOT_FOUND, ["Content-type" => "application/json"]);
+        }
+    }
 }
